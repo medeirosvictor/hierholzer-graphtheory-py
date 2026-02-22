@@ -1,4 +1,3 @@
-from collections import OrderedDict
 def matrix_to_list(adj_matrix):
     """Converts Adjacency Matrix of graph to it's Adjacency List"""
 

@@ -1,5 +1,4 @@
 .idea/
-modules/__pycache__/
 .vscode/
-modules/*.pyc
+__pycache__/
 *.pyc
