@@ -1,26 +1,45 @@
 #!/usr/bin/python
-import itertools
 
+from subtract_edges import subtract_edges
+from is_not_null import is_not_null
 from dfs import dfs_cycle
+from converter import list_to_path
 
 def hierholzer(graph, node):
-    graph_nodes = [x for x in graph]
-    graph_size = len(graph_nodes)
-    graph_edges = []
-    for node in graph_nodes:
-        for adj in graph[node]:
-            graph_edges.append((node, adj))
-    print(graph_edges)
-    visited_edges = {}
-    euler_circuit = [node]
-    pointer = 0
-    while len(graph_edges) > 0:
-        sub_tour = []
-        dfs_cycle(graph, euler_circuit[pointer], euler_circuit[pointer], sub_tour, visited_edges)
-        print("Cycle found: ", sub_tour)
-        if len(sub_tour) != 0:
-            euler_circuit = list(itertools.chain(euler_circuit[:pointer+1], sub_tour, euler_circuit[pointer+1:]))
-        print("Euler tour at the moment: ", euler_circuit)
-        pointer += 1
-    print(euler_circuit)
-    return euler_circuit
+    euler_tour = []
+    parent_node = node
+    start_node = node
+    callback = [False]
+    dfs_cycle(graph, node, parent_node, start_node, {}, callback)
+    sub_tour = callback[0]
+    cycle = list_to_path(sub_tour)
+    if not cycle:
+        print("Graph is acyclic")
+        return euler_tour
+    print("Cycle found: ", cycle)
+    euler_tour = cycle + euler_tour
+    print("Eulerian Tour at the moment: ", euler_tour)
+    graph = subtract_edges(graph, sub_tour)
+    while is_not_null(graph):
+        check = False
+        for node in graph:
+            if len(graph[node]) > 0:
+                check = True
+                current_node = node
+                break
+        if not check:
+            print("Graph is not eulerian")
+            return False
+        callback = [False]
+        dfs_cycle(graph, current_node, current_node, current_node, {}, callback)
+        sub_tour = callback[0]
+        cycle = list_to_path(sub_tour)
+        print("Cycle found: ", cycle)
+        if not cycle:
+            return euler_tour
+        pos = euler_tour.index(current_node)
+        euler_tour[pos:pos+1] = cycle
+        print("Eulerian Tour at the moment: ", euler_tour)
+        graph = subtract_edges(graph, sub_tour)
+
+    return euler_tour

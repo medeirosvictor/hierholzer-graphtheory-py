@@ -22,12 +22,16 @@ A collection of graph theory algorithm implementations built as undergraduate co
 
 ```
 ├── Hierholzer/              # Eulerian circuit finder
-│   ├── main.py              # Entry point
+│   ├── main.py              # Entry point — validates graph, runs algorithm
 │   ├── hierholzer.py        # Core Hierholzer's algorithm
-│   ├── graph.py             # Graph class (minimal)
 │   ├── dfs.py               # Modified DFS for cycle detection
-│   ├── converter.py         # Adjacency matrix → adjacency list
+│   ├── converter.py         # Adjacency matrix → adjacency list + path converter
 │   ├── read_input.py        # File I/O
+│   ├── is_connected.py      # Connectivity check
+│   ├── is_eulerian_graph.py # Checks all vertices have even degree
+│   ├── is_semi_eulerian_graph.py # Detects exactly 2 odd-degree vertices
+│   ├── is_not_null.py       # Checks if graph still has edges
+│   ├── subtract_edges.py    # Removes traversed edges from graph
 │   ├── samples/             # Sample graph inputs
 │   │   ├── base_input.txt
 │   │   ├── k5_graph.txt
